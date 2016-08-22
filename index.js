@@ -2,8 +2,6 @@
 
 const Auth0 = require('auth0');
 const async = require('async');
-const moment = require('moment');
-const useragent = require('useragent');
 const express = require('express');
 const _ = require('lodash');
 const Webtask = require('webtask-tools');
@@ -58,7 +56,7 @@ function lastLogCheckpoint(req, res) {
             if (logs && logs.length) {
               logs.forEach((l) => context.logs.push(l));
               context.checkpointId = context.logs[context.logs.length - 1]._id;
-              // return setImmediate(() => getLogs(context));
+              return setImmediate(() => getLogs(context));
             }
 
             console.log(`Total logs: ${context.logs.length}.`);
@@ -349,7 +347,3 @@ app.get('/', lastLogCheckpoint);
 app.post('/', lastLogCheckpoint);
 
 module.exports = Webtask.fromExpress(app);
-
-
-
-
