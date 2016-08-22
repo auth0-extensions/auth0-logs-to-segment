@@ -41,7 +41,7 @@ function lastLogCheckpoint(req, res) {
         const getLogs = (context) => {
           console.log(`Logs from: ${context.checkpointId || 'Start'}.`);
 
-          let take = Number.parseInt(ctx.data.BATCH_SIZE);
+          let take = Number.parseInt(ctx.data.BATCH_SIZE) || 100;
 
           take = take > 100 ? 100 : take;
 
@@ -75,7 +75,7 @@ function lastLogCheckpoint(req, res) {
       (context, callback) => {
         console.log(`Sending ${context.logs.length}`);
 
-        async.eachLimit(logs, 10, (log, cb) => {
+        async.eachLimit(context.logs, 10, (log, cb) => {
           auth0.users.get({ id: log.user_id })
             .then((user) => {
               analytics.track({
@@ -85,7 +85,9 @@ function lastLogCheckpoint(req, res) {
               }, cb);
             })
             .catch(cb);
-        }, callback);
+        }, (err) => {
+          return callback(err, context);
+        });
       }
     ], function (err, context) {
       if (err) {

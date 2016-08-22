@@ -89,7 +89,7 @@ module.exports =
 	      var getLogs = function getLogs(context) {
 	        console.log('Logs from: ' + (context.checkpointId || 'Start') + '.');
 
-	        var take = Number.parseInt(ctx.data.BATCH_SIZE);
+	        var take = Number.parseInt(ctx.data.BATCH_SIZE) || 100;
 
 	        take = take > 100 ? 100 : take;
 
@@ -126,7 +126,7 @@ module.exports =
 	    }, function (context, callback) {
 	      console.log('Sending ' + context.logs.length);
 
-	      async.eachLimit(logs, 10, function (log, cb) {
+	      async.eachLimit(context.logs, 10, function (log, cb) {
 	        auth0.users.get({ id: log.user_id }).then(function (user) {
 	          analytics.track({
 	            userId: log.user_id,
@@ -134,7 +134,9 @@ module.exports =
 	            properties: _.extend({}, user.user_metadata, _.omit(user, ['user_metadata', 'app_metadada']), user.app_metadata)
 	          }, cb);
 	        }).catch(cb);
-	      }, callback);
+	      }, function (err) {
+	        return callback(err, context);
+	      });
 	    }], function (err, context) {
 	      if (err) {
 	        console.log('Job failed.', err);
