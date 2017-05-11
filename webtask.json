@@ -12,6 +12,8 @@
   ],
   "schedule": "0 */5 * * * *",
   "auth0": {
+    "createClient": true,
+    "onUninstallPath": "/.extensions/on-uninstall",
     "scopes": "read:logs read:users"
   },
   "secrets": {
