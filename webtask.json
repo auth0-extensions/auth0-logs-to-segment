@@ -18,6 +18,31 @@
     "SEGMENT_KEY": {
       "description": "Segment API Key",
       "required": true
+    },
+    "BATCH_SIZE": {
+      "description": "The amount of logs to be read on each execution. Maximum is 10.",
+      "default": 10
+    },
+    "START_FROM": {
+      "description": "CheckpointId of log to start with."
+    },
+    "SLACK_INCOMING_WEBHOOK_URL": {
+      "description": "Slack webhook"
+    },
+    "SLACK_SEND_SUCCESS": {
+      "description": "Send success messages to slack?",
+      "type": "select",
+      "allowMultiple": true,
+      "options": [
+        {
+          "value": "No",
+          "text": ""
+        },
+        {
+          "value": "Yes",
+          "text": "true"
+        }
+      ]
     }
   }
 }
