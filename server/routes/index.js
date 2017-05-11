@@ -21,7 +21,7 @@ module.exports = (storage) => {
     clientSecret: config('AUTH0_CLIENT_SECRET'),
   });
 
-  app.get('/', htmlRoute());
+  app.get('/', managementApi, processLogs(storage), htmlRoute());
   app.post('/', managementApi, processLogs(storage));
 
   app.get('/api/report', authenticateAdmins, (req, res, next) =>
