@@ -7,7 +7,10 @@ const logger = require('../lib/logger');
 
 module.exports = (storage) =>
   (req, res, next) => {
-    if (!req.body || !req.body.schedule || req.body.state !== 'active') {
+    const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
+    const isCronPost = (req.body && req.body.schedule && req.body.state === 'active');
+    const isCronGet = (wtHead.origin === 'https://manage.auth0.com' && wtHead['if-none-match']);
+    if (!isCronPost && !isCronGet) {
       return next();
     }
 

@@ -14,7 +14,7 @@
   "auth0": {
     "createClient": true,
     "onUninstallPath": "/.extensions/on-uninstall",
-    "scopes": "read:logs read:users"
+    "scopes": "read:logs read:users delete:clients"
   },
   "secrets": {
     "SEGMENT_KEY": {

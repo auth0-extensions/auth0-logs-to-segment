@@ -11,7 +11,7 @@ module.exports = (storage) => {
     credentialsRequired: true,
     secret: config('EXTENSION_SECRET'),
     audience: 'urn:logs-to-segment',
-    baseUrl: config('PUBLIC_WT_URL'),
+    baseUrl: config('PUBLIC_WT_URL') || config('WT_URL'),
     onLoginSuccess: (req, res, next) => next()
   });
 
@@ -21,7 +21,7 @@ module.exports = (storage) => {
     clientSecret: config('AUTH0_CLIENT_SECRET'),
   });
 
-  app.get('/', htmlRoute());
+  app.get('/', managementApi, processLogs(storage), htmlRoute());
   app.post('/', managementApi, processLogs(storage));
 
   app.get('/api/report', authenticateAdmins, (req, res, next) =>

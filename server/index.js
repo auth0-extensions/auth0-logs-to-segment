@@ -33,7 +33,7 @@ module.exports = (configProvider, storageProvider) => {
     audience: 'urn:logs-to-segment',
     rta: config('AUTH0_RTA').replace('https://', ''),
     domain: config('AUTH0_DOMAIN'),
-    baseUrl: config('PUBLIC_WT_URL'),
+    baseUrl: config('PUBLIC_WT_URL') || config('WT_URL'),
     clientName: 'Logs to Segment',
     urlPrefix: '',
     sessionStorageKey: 'logs-to-segment:apiToken',
