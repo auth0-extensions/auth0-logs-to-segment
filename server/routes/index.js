@@ -15,14 +15,7 @@ module.exports = (storage) => {
     onLoginSuccess: (req, res, next) => next()
   });
 
-  const managementApi = middlewares.managementApiClient({
-    domain: config('AUTH0_DOMAIN'),
-    clientId: config('AUTH0_CLIENT_ID'),
-    clientSecret: config('AUTH0_CLIENT_SECRET'),
-  });
-
-  app.get('/', managementApi, processLogs(storage), htmlRoute());
-  app.post('/', managementApi, processLogs(storage));
+  app.get('/', htmlRoute());
 
   app.get('/api/report', authenticateAdmins, (req, res, next) =>
     storage.read()

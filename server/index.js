@@ -5,13 +5,13 @@ const Express = require('express');
 const bodyParser = require('body-parser');
 const tools = require('auth0-extension-tools');
 const expressTools = require('auth0-extension-express-tools');
-const urlHelpers = require('auth0-extension-express-tools').urlHelpers;
 
 const routes = require('./routes');
 const meta = require('./routes/meta');
 const hooks = require('./routes/hooks');
 const logger = require('./lib/logger');
 const config = require('./lib/config');
+const processLogs = require('./lib/processLogs');
 
 module.exports = (configProvider, storageProvider) => {
   config.setProvider(configProvider);
@@ -24,6 +24,9 @@ module.exports = (configProvider, storageProvider) => {
   app.use(morgan(':method :url :status :response-time ms - :res[content-length]', {
     stream: logger.stream
   }));
+
+  app.use(processLogs(storage));
+
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: false }));
 
