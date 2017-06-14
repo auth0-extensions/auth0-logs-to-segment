@@ -25,11 +25,6 @@ module.exports = (configProvider, storageProvider) => {
     stream: logger.stream
   }));
 
-  app.use(processLogs(storage));
-
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: false }));
-
   // Configure routes.
   app.use(expressTools.routes.dashboardAdmins({
     secret: config('EXTENSION_SECRET'),
@@ -42,10 +37,13 @@ module.exports = (configProvider, storageProvider) => {
     sessionStorageKey: 'logs-to-segment:apiToken',
     scopes: 'read:logs read:users'
   }));
+
   app.use('/meta', meta());
   app.use('/.extensions', hooks());
 
   app.use('/app', Express.static(path.join(__dirname, '../dist')));
+
+  app.use(processLogs(storage));
   app.use('/', routes(storage));
 
   // Generic error handler.
