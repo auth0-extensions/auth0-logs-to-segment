@@ -33,17 +33,18 @@
       "description": "Slack webhook"
     },
     "SLACK_SEND_SUCCESS": {
-      "description": "Send success messages to slack?",
+      "description": "If disabled, only failed runs will be reported to Slack",
       "type": "select",
-      "allowMultiple": true,
+      "allowMultiple": false,
+      "default": "false",
       "options": [
         {
-          "value": "No",
-          "text": ""
+          "value": "false",
+          "text": "No"
         },
         {
-          "value": "Yes",
-          "text": "true"
+          "value": "true",
+          "text": "Yes"
         }
       ]
     },

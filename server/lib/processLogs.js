@@ -62,7 +62,9 @@ module.exports = (storage) =>
     return auth0logger
       .run(onLogsReceived)
       .then(result => {
-        slack.send(result.status, result.checkpoint);
+        if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
+          slack.send(result.status, result.checkpoint);
+        }
         res.json(result);
       })
       .catch(err => {
