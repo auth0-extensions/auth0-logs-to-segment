@@ -59,12 +59,35 @@ module.exports = (storage) =>
 
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
+    const sendDailyReport = () => {
+      if (!config('DAILY_REPORT_TIME') || !/\d:\d/.test(config('DAILY_REPORT_TIME'))) {
+        return null;
+      }
+
+      const current = new Date();
+      const hour = current.getHours();
+      const minute = current.getMinutes();
+      const trigger = config('DAILY_REPORT_TIME').split(':');
+      const triggerHour = parseInt(trigger[0]);
+      const triggerMinute = parseInt(trigger[1]);
+
+      if (hour === triggerHour && (minute >= triggerMinute && minute < triggerMinute + 5)) {
+        const end = current.getTime();
+        const start = end - 86400000;
+        auth0logger.getReport(start, end)
+          .then(report => slack.send(report, report.checkpoint));
+      }
+    };
+
     return auth0logger
       .run(onLogsReceived)
       .then(result => {
-        if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
+        if (result && result.status && result.status.error) {
+          slack.send(result.status, result.checkpoint);
+        } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
           slack.send(result.status, result.checkpoint);
         }
+        sendDailyReport();
         res.json(result);
       })
       .catch(err => {

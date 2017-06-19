@@ -33,7 +33,7 @@
       "description": "Slack webhook"
     },
     "SLACK_SEND_SUCCESS": {
-      "description": "If disabled, only failed runs will be reported to Slack",
+      "description": "If disabled, only failed runs and daily reports will be reported to Slack",
       "type": "select",
       "allowMultiple": false,
       "default": "false",
@@ -47,6 +47,10 @@
           "text": "Yes"
         }
       ]
+    },
+    "DAILY_REPORT_TIME": {
+      "description": "Time of daily report. Use format HH:MM",
+      "default": "00:00"
     },
     "LOG_LEVEL": {
       "description": "This allows you to specify the log level of events that need to be sent",
