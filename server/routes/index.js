@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const router = require('express').Router;
 const middlewares = require('auth0-extension-express-tools').middlewares;
 
@@ -19,7 +20,15 @@ module.exports = (storage) => {
 
   app.get('/api/report', authenticateAdmins, (req, res, next) =>
     storage.read()
-      .then(data => res.json((data && data.logs) || []))
+      .then((data) => {
+        const allLogs = (data && data.logs) ? _.orderBy(data.logs, 'start', 'desc') : [];
+        const logs = (req.query.filter && req.query.filter === 'errors') ? _.filter(allLogs, log => !!log.error) : allLogs;
+        const page = (req.query.page && parseInt(req.query.page)) ? parseInt(req.query.page) - 1 : 0;
+        const perPage = (req.query.per_page && parseInt(req.query.per_page)) || 10;
+        const offset = perPage * page;
+
+        return res.json({ logs: logs.slice(offset, offset + perPage), total: logs.length });
+      })
       .catch(next));
 
   return app;

@@ -21,6 +21,8 @@ export const CONFIRM_NOTIFICATION_FULFILLED = 'CONFIRM_NOTIFICATION_FULFILLED';
 export const OPEN_LOG = 'OPEN_LOG';
 export const CLEAR_LOG = 'CLEAR_LOG';
 
+export const SET_FILTER = 'SET_FILTER';
+
 // Fetch.
 export const FETCH_LOGS = 'FETCH_LOGS';
 export const FETCH_LOGS_PENDING = 'FETCH_LOGS_PENDING';

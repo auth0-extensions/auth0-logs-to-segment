@@ -1,5 +1,3 @@
-import _ from 'lodash';
-import moment from 'moment';
 import { fromJS } from 'immutable';
 
 import * as constants from '../constants';
@@ -9,6 +7,7 @@ const initialState = {
   loading: false,
   error: null,
   records: [],
+  total: 0,
   activeRecord: null
 };
 
@@ -35,7 +34,9 @@ export const logs = createReducer(fromJS(initialState), { // eslint-disable-line
     const { data } = action.payload;
     return state.merge({
       loading: false,
-      records: fromJS(_.orderBy(data, 'start', 'desc')).concat(state.get('records'))
+      records: fromJS(data.logs),
+      nextPage: action.meta.page + 1,
+      total: data.total
     });
   }
 });
