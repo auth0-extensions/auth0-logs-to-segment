@@ -48,10 +48,6 @@
         }
       ]
     },
-    "DAILY_REPORT_TIME": {
-      "description": "Time of daily report. Use format HH:MM",
-      "default": "00:00"
-    },
     "LOG_LEVEL": {
       "description": "This allows you to specify the log level of events that need to be sent",
       "type": "select",

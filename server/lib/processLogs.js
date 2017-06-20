@@ -60,14 +60,16 @@ module.exports = (storage) =>
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
     const sendDailyReport = () => {
-      if (!config('DAILY_REPORT_TIME') || !/\d:\d/.test(config('DAILY_REPORT_TIME'))) {
+      const reportTime = config('DAILY_REPORT_TIME') || '16:00';
+
+      if (!reportTime || !/\d:\d/.test(reportTime)) {
         return null;
       }
 
       const current = new Date();
       const hour = current.getHours();
       const minute = current.getMinutes();
-      const trigger = config('DAILY_REPORT_TIME').split(':');
+      const trigger = reportTime.split(':');
       const triggerHour = parseInt(trigger[0]);
       const triggerMinute = parseInt(trigger[1]);
 
