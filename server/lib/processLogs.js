@@ -1,4 +1,5 @@
 const async = require('async');
+const moment = require('moment');
 const Segment = require('analytics-node');
 const tools = require('auth0-extension-tools');
 const loggingTools = require('auth0-log-extension-tools');
@@ -59,26 +60,30 @@ module.exports = (storage) =>
 
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
-    const sendDailyReport = () => {
-      const reportTime = config('DAILY_REPORT_TIME') || '16:00';
-
-      if (!reportTime || !/\d:\d/.test(reportTime)) {
-        return null;
-      }
-
+    const sendDailyReport = (lastReportDate) => {
       const current = new Date();
-      const hour = current.getHours();
-      const minute = current.getMinutes();
-      const trigger = reportTime.split(':');
-      const triggerHour = parseInt(trigger[0]);
-      const triggerMinute = parseInt(trigger[1]);
 
-      if (hour === triggerHour && (minute >= triggerMinute && minute < triggerMinute + 5)) {
-        const end = current.getTime();
-        const start = end - 86400000;
-        auth0logger.getReport(start, end)
-          .then(report => slack.send(report, report.checkpoint));
-      }
+      const end = current.getTime();
+      const start = end - 86400000;
+      auth0logger.getReport(start, end)
+        .then(report => slack.send(report, report.checkpoint))
+        .then(() => storage.read())
+        .then((data) => {
+          data.lastReportDate = lastReportDate;
+          return storage.write(data);
+        });
+    };
+
+    const checkReportTime = () => {
+      storage.read()
+        .then((data) => {
+          const now = moment().format('DD-MM-YYYY');
+          const reportTime = config('DAILY_REPORT_TIME') || 16;
+
+          if (data.lastReportDate !== now && new Date().getHours() >= reportTime) {
+            sendDailyReport(now);
+          }
+        })
     };
 
     return auth0logger
@@ -89,11 +94,12 @@ module.exports = (storage) =>
         } else if (config('SLACK_SEND_SUCCESS') === true || config('SLACK_SEND_SUCCESS') === 'true') {
           slack.send(result.status, result.checkpoint);
         }
-        sendDailyReport();
+        checkReportTime();
         res.json(result);
       })
       .catch(err => {
         slack.send({ error: err, logsProcessed: 0 }, null);
+        checkReportTime();
         next(err);
       });
   };
