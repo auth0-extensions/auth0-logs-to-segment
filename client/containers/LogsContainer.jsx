@@ -52,10 +52,10 @@ export default connectContainer(class extends Component {
           <div className="col-xs-6">
             <ul className="nav nav-pills">
               <li className={!this.props.filter.status ? 'active' : null} >
-                <a onClick={() => this.updateFilter(false)}>Show all</a>
+                <a onClick={() => this.updateFilter(false)}>All Runs</a>
               </li>
               <li className={this.props.filter.status ? 'active' : null}>
-                <a onClick={() => this.updateFilter(true)}>Show errors</a>
+                <a onClick={() => this.updateFilter(true)}>Failed Runs</a>
               </li>
             </ul>
           </div>
