@@ -1,6 +1,6 @@
 {
   "name": "auth0-logs-to-segment",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "This extension will take all of your Auth0 logs and export them to Segment",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,6 @@
     "externals": [
       "analytics-node@2.0.1",
       "async@2.1.2",
-      "auth0-extension-express-tools@1.0.1",
       "auth0-extension-tools@1.2.1",
       "bluebird@3.4.6",
       "compression@1.4.4",
@@ -67,11 +66,11 @@
     "analytics-node": "2.0.1",
     "async": "^1.5.2",
     "auth0": "^2.4.0",
-    "auth0-extension-express-tools": "^1.0.1",
+    "auth0-extension-express-tools": "^1.1.0",
     "auth0-extension-tools": "1.2.1",
     "auth0-extension-ui": "^1.0.1",
     "auth0-oauth2-express": "^1.1.8",
-    "auth0-log-extension-tools": "git+https://github.com/auth0-extensions/auth0-log-extension-tools",
+    "auth0-log-extension-tools": "1.2.2",
     "axios": "^0.15.0",
     "babel": "^6.5.2",
     "babel-core": "^6.9.1",
@@ -92,7 +91,7 @@
     "immutable": "^3.8.1",
     "jsonwebtoken": "^7.1.9",
     "jwt-decode": "^2.1.0",
-    "lodash": "^4.8.2",
+    "lodash": "3.10.1",
     "lru-memoizer": "^1.6.0",
     "moment": "^2.13.0",
     "morgan": "^1.7.0",

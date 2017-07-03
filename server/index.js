@@ -25,10 +25,18 @@ module.exports = (configProvider, storageProvider) => {
     stream: logger.stream
   }));
 
-  if (process.env.NODE_ENV === 'development') {
-    app.use(bodyParser.json());
-    app.use(bodyParser.urlencoded({ extended: false }));
-  }
+  const prepareBody = (middleware) =>
+    (req, res, next) => {
+      if (req.webtaskContext && req.webtaskContext.body) {
+        req.body = req.webtaskContext.body;
+        return next();
+      }
+
+      return middleware(req, res, next);
+    };
+
+  app.use(prepareBody(bodyParser.json()));
+  app.use(prepareBody(bodyParser.urlencoded({ extended: false })));
 
   // Configure routes.
   app.use(expressTools.routes.dashboardAdmins({
@@ -39,8 +47,7 @@ module.exports = (configProvider, storageProvider) => {
     baseUrl: config('PUBLIC_WT_URL') || config('WT_URL'),
     clientName: 'Logs to Segment',
     urlPrefix: '',
-    sessionStorageKey: 'logs-to-segment:apiToken',
-    scopes: 'read:logs read:users'
+    sessionStorageKey: 'logs-to-segment:apiToken'
   }));
 
   app.use('/meta', meta());

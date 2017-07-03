@@ -1,7 +1,7 @@
 {
   "title": "Auth0 Logs to Segment",
   "name": "auth0-logs-to-segment",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "auth0",
   "description": "This extension will take all of your Auth0 logs and export them to Segment",
   "type": "cron",
@@ -27,13 +27,13 @@
       "default": 100
     },
     "START_FROM": {
-      "description": "CheckpointId of log to start with."
+      "description": "Checkpoint ID of log to start from."
     },
     "SLACK_INCOMING_WEBHOOK_URL": {
-      "description": "Slack webhook"
+      "description": "Slack Incoming Webhook URL used to report statistics and possible failures"
     },
     "SLACK_SEND_SUCCESS": {
-      "description": "If disabled, only failed runs and daily reports will be reported to Slack",
+      "description": "This setting will enable verbose notifications to Slack which are useful for troubleshooting",
       "type": "select",
       "allowMultiple": false,
       "default": "false",
@@ -85,156 +85,196 @@
       "allowMultiple": true,
       "options": [
         {
-          "value": "-",
-          "text": ""
+          "text": "",
+          "value": "-"
         },
         {
-          "value": "s",
-          "text": "Success Login (Info)"
+          "text": "Success Login",
+          "value": "s"
         },
         {
-          "value": "seacft",
-          "text": "Success Exchange (Info)"
+          "text": "Success Exchange",
+          "value": "seacft"
         },
         {
-          "value": "feacft",
-          "text": "Failed Exchange (Error)"
+          "text": "Success Exchange (Client Credentials)",
+          "value": "seccft"
         },
         {
-          "value": "f",
-          "text": "Failed Login (Error)"
+          "text": "Failed Exchange",
+          "value": "feacft"
         },
         {
-          "value": "w",
-          "text": "Warnings During Login (Warning)"
+          "text": "Failed Exchange (Client Credentials)",
+          "value": "feccft"
         },
         {
-          "value": "du",
-          "text": "Deleted User (Info)"
+          "text": "Failed Login",
+          "value": "f"
         },
         {
-          "value": "fu",
-          "text": "Failed Login (invalid email/username) (Error)"
+          "text": "Warnings During Login",
+          "value": "w"
         },
         {
-          "value": "fp",
-          "text": "Failed Login (wrong password) (Error)"
+          "text": "Deleted User",
+          "value": "du"
         },
         {
-          "value": "fc",
-          "text": "Failed by Connector (Error)"
+          "text": "Failed Login (invalid email/username)",
+          "value": "fu"
         },
         {
-          "value": "fco",
-          "text": "Failed by CORS (Error)"
+          "text": "Failed Login (wrong password)",
+          "value": "fp"
         },
         {
-          "value": "con",
-          "text": "Connector Online (Info)"
+          "text": "Failed by Connector",
+          "value": "fc"
         },
         {
-          "value": "coff",
-          "text": "Connector Offline (Error)"
+          "text": "Failed by CORS",
+          "value": "fco"
         },
         {
-          "value": "fcpro",
-          "text": "Failed Connector Provisioning (Critical)"
+          "text": "Connector Online",
+          "value": "con"
         },
         {
-          "value": "ss",
-          "text": "Success Signup (Info)"
+          "text": "Connector Offline",
+          "value": "coff"
         },
         {
-          "value": "fs",
-          "text": "Failed Signup (Error)"
+          "text": "Failed Connector Provisioning",
+          "value": "fcpro"
         },
         {
-          "value": "cs",
-          "text": "Code Sent (Debug)"
+          "text": "Success Signup",
+          "value": "ss"
         },
         {
-          "value": "cls",
-          "text": "Code/Link Sent (Debug)"
+          "text": "Failed Signup",
+          "value": "fs"
         },
         {
-          "value": "sv",
-          "text": "Success Verification Email (Debug)"
+          "text": "Code Sent",
+          "value": "cs"
         },
         {
-          "value": "fv",
-          "text": "Failed Verification Email (Debug)"
+          "text": "Code/Link Sent",
+          "value": "cls"
         },
         {
-          "value": "scp",
-          "text": "Success Change Password (Info)"
+          "text": "Success Verification Email",
+          "value": "sv"
         },
         {
-          "value": "fcp",
-          "text": "Failed Change Password (Error)"
+          "text": "Failed Verification Email",
+          "value": "fv"
         },
         {
-          "value": "sce",
-          "text": "Success Change Email (Info)"
+          "text": "Success Change Password",
+          "value": "scp"
         },
         {
-          "value": "fce",
-          "text": "Failed Change Email (Error)"
+          "text": "Failed Change Password",
+          "value": "fcp"
         },
         {
-          "value": "scu",
-          "text": "Success Change Username (Info)"
+          "text": "Success Change Email",
+          "value": "sce"
         },
         {
-          "value": "fcu",
-          "text": "Failed Change Username (Error)"
+          "text": "Failed Change Email",
+          "value": "fce"
         },
         {
-          "value": "scpn",
-          "text": "Success Change Phone Number (Info)"
+          "text": "Success Change Username",
+          "value": "scu"
         },
         {
-          "value": "fcpn",
-          "text": "Failed Change Phone Number (Error)"
+          "text": "Failed Change Username",
+          "value": "fcu"
         },
         {
-          "value": "svr",
-          "text": "Success Verification Email Request (Debug)"
+          "text": "Success Change Phone Number",
+          "value": "scpn"
         },
         {
-          "value": "fvr",
-          "text": "Failed Verification Email Request (Error)"
+          "text": "Failed Change Phone Number",
+          "value": "fcpn"
         },
         {
-          "value": "scpr",
-          "text": "Success Change Password Request (Debug)"
+          "text": "Success Verification Email Request",
+          "value": "svr"
         },
         {
-          "value": "fcpr",
-          "text": "Failed Change Password Request (Error)"
+          "text": "Failed Verification Email Request",
+          "value": "fvr"
         },
         {
-          "value": "fn",
-          "text": "Failed Sending Notification (Error)"
+          "text": "Success Change Password Request",
+          "value": "scpr"
         },
         {
-          "value": "limit_wc",
-          "text": "Blocked Account (Critical)"
+          "text": "Failed Change Password Request",
+          "value": "fcpr"
         },
         {
-          "value": "limit_ui",
-          "text": "Too Many Calls to /userinfo (Critical)"
+          "text": "Failed Sending Notification",
+          "value": "fn"
         },
         {
-          "value": "api_limit",
-          "text": "Rate Limit On API (Critical)"
+          "text": "API Operation",
+          "value": "sapi"
         },
         {
-          "value": "sdu",
-          "text": "Successful User Deletion (Info)"
+          "text": "Failed API Operation",
+          "value": "fapi"
         },
         {
-          "value": "fdu",
-          "text": "Failed User Deletion (Error)"
+          "text": "Blocked Account",
+          "value": "limit_wc"
+        },
+        {
+          "text": "Too Many Calls to /userinfo",
+          "value": "limit_ui"
+        },
+        {
+          "text": "Rate Limit On API",
+          "value": "api_limit"
+        },
+        {
+          "text": "Successful User Deletion",
+          "value": "sdu"
+        },
+        {
+          "text": "Failed User Deletion",
+          "value": "fdu"
+        },
+        {
+          "text": "Blocked Account",
+          "value": "limit_wc"
+        },
+        {
+          "text": "Blocked IP Address",
+          "value": "limit_mu"
+        },
+        {
+          "text": "Success Logout",
+          "value": "slo"
+        },
+        {
+          "text": "Failed Logout",
+          "value": "flo"
+        },
+        {
+          "text": "Success Delegation",
+          "value": "sd"
+        },
+        {
+          "text": "Failed Delegation",
+          "value": "fd"
         }
       ]
     }

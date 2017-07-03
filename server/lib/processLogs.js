@@ -11,7 +11,7 @@ module.exports = (storage) =>
   (req, res, next) => {
     const wtBody = (req.webtaskContext && req.webtaskContext.body) || req.body || {};
     const wtHead = (req.webtaskContext && req.webtaskContext.headers) || {};
-    const isCron = (wtBody.schedule && wtBody.state === 'active') || (wtHead.referer === 'https://manage.auth0.com/' && wtHead['if-none-match']);
+    const isCron = (wtBody.schedule && wtBody.state === 'active') || (wtHead.referer === `${config('AUTH0_MANAGE_URL')}/` && wtHead['if-none-match']);
 
     if (!isCron) {
       return next();
@@ -57,6 +57,10 @@ module.exports = (storage) =>
       logTypes: config('LOG_TYPES'),
       logLevel: config('LOG_LEVEL')
     };
+
+    if (!options.batchSize || options.batchSize > 100) {
+      options.batchSize = 100;
+    }
 
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
