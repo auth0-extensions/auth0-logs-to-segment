@@ -62,6 +62,10 @@ module.exports = (storage) =>
       options.batchSize = 100;
     }
 
+    if (options.logTypes && !Array.isArray(options.logTypes)) {
+      options.logTypes = options.logTypes.replace(/\s/g, '').split(',');
+    }
+
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
     const sendDailyReport = (lastReportDate) => {
