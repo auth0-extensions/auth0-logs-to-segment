@@ -55,7 +55,8 @@ module.exports = (storage) =>
       batchSize: config('BATCH_SIZE'),
       startFrom: config('START_FROM'),
       logTypes: config('LOG_TYPES'),
-      logLevel: config('LOG_LEVEL')
+      logLevel: config('LOG_LEVEL'),
+      enableServerSideFiltering: config('AUTH0_RTA').replace('https://', '') === 'auth0.auth0.com'
     };
 
     if (!options.batchSize || options.batchSize > 100) {
