@@ -5,7 +5,7 @@
   "author": "auth0",
   "description": "This extension will take all of your Auth0 logs and export them to Segment",
   "type": "cron",
-  "repository": "https://github.com/auth0/auth0-logs-to-segment",
+  "repository": "https://github.com/auth0-extensions/auth0-logs-to-segment",
   "keywords": [
     "auth0",
     "extension"
