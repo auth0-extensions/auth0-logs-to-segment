@@ -65,6 +65,10 @@ module.exports = (storage) =>
       logTypes: [ 's', 'ss', 'f' ]
     };
 
+    if (!options.batchSize || options.batchSize > 10) {
+      options.batchSize = 10;
+    }
+
     const auth0logger = new loggingTools.LogsProcessor(storage, options);
 
     return auth0logger
